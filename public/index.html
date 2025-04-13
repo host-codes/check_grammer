@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grammar Checker - Government Exam Prep</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    textarea {
+      width: 100%;
+      height: 180px;
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 25px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>📘 Grammar Checker for Govt Job Prep</h1>
+  <p>Paste your sentence or passage below and get correction + explanation:</p>
+  <textarea id="inputText" placeholder="Paste here..."></textarea>
+  <br>
+  <button onclick="checkGrammar()">Check Grammar</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function checkGrammar() {
+      const inputText = document.getElementById("inputText").value;
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "Checking grammar, please wait...";
+
+      try {
+        const response = await fetch("/check-grammar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text: inputText })
+        });
+
+        const data = await response.json();
+        resultDiv.innerText = data.result || "No result found.";
+      } catch (error) {
+        resultDiv.innerText = "Error checking grammar.";
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
